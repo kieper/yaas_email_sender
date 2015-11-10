@@ -2,23 +2,16 @@
  * Created by i324068 on 10/11/15.
  */
 
-var conf = require('./yaasConf');
+var conf = require('./yaasConfig');
 var http = require('http');
-var querystring = require('querystring');
 
 
 var yaasEmail = {
     send: function (token, content ) {
-        var postData = querystring.stringify( content );
-        var tokenRequest = http.request({
-            host: 'api.yaas.io',
-            path: '/hybris/product/b1/' + conf.tenant +"/send",
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded',
-                'Content-Length': Buffer.byteLength(postData)
-            }
-        }, function(res) {
+        var postData =  JSON.stringify(content);
+        var options = conf.getRequestOptions(token, '/hybris/email/b1/' + conf.tenant +"/send", postData);
+
+        var tokenRequest = http.request(options, function(res) {
             res.setEncoding('utf8');
             res.on('data', function (chunk) {
                 console.log('email send success: ' + chunk);

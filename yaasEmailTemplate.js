@@ -3,20 +3,19 @@
  */
 
 var http = require('http');
-var conf = require('./yaasConf');
-var queryStriing = require ('queryString');
+var conf = require('./yaasConfig');
 
-var yaasEmailTempalte = {
+var yaasEmailTemplate = {
     create : function (token, content) {
-        var postData = queryStriing(content);
-        var options = conf.getRequestOptions('/hybris/product/b1/' + conf.tenant +'/tempaltes', postData);
+        var postData =  JSON.stringify(content);
+        var options = conf.getRequestOptions(token, '/hybris/email/b1/' + conf.tenant +'/templates', postData);
         var request = http.request(options, function(res) {
             res.setEncoding('utf8');
             res.on('data', function (chunk) {
-                console.log('email send success: ' + chunk);
+                console.log('email template success: ' + chunk);
             });
         }).on('error', function(err) {
-
+            console.log(err);
         });
 
         request.write(postData);
@@ -25,4 +24,4 @@ var yaasEmailTempalte = {
 }
 
 
-module.exports = yaasEmailTempalte;
+module.exports = yaasEmailTemplate;

@@ -9,7 +9,7 @@ var yaasOAuth = {
     getToken: function (clientSecret, clientId, callback ) {
         var postData = querystring.stringify( {
             'grant_type' : 'client_credentials',
-            'scope' : 'SCOPE_NAME' ,
+            'scope' : 'hybris.email_manage hybris.email_send',
             'client_id' : clientId,
             'client_secret' : clientSecret
         });
